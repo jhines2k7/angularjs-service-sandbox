@@ -11,38 +11,31 @@
 
     angular.module('services-sandbox', [])
 
-    .value('_color', 'red')
-    .value('_numDoors', 4)
+    .service('CarService', function(){
+        var _color;
+        var _numDoors;
 
-    .service('CarService', function(_color, _numDoors){
-        var color = _color;
-        var numDoors = _numDoors;
-
-        this.getColor = function(){
-            console.log('Calling setNumDoors() ', setNumDoors(3));
-            return color;
-        };
-
-        this.setColor = function(clr) {
-            color = clr;
-        };
-
-        function setNumDoors(doors) {
-            return doors;
+        function Car(color, numDoors) {
+            _color = color;
+            _numDoors = numDoors;
         }
+
+        Car.prototype.getColor = function() {
+            return _color;
+        };
+
+        return Car;
     })
 
-    .run(function(CarService, _color) {
-        console.log('The color of the car is ', CarService.getColor());
+    .controller('SandboxController', function(CarService) {
+        var car = new CarService('red', 4);
+        console.log('The color of my new car is: ', car.getColor());
 
-        CarService.setColor('green');
-
-        console.log('After setting the color, the car is now ', CarService.getColor());
-        console.log('And the value of _color is still ', _color);
-        console.log('And CarService.color should be undefined. CarService.color', CarService.color);
-        console.log('CarService.setNumDoors should be undefined. ', CarService.setNumDoors());
+        console.log(car._color);
     });
 </script>
+
+<div ng-controller="SandboxController"></div>
 
 </body>
 </html>
